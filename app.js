@@ -9,6 +9,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api", routes);
 
-app.listen(config.PORT, () => {
+app.listen(config.port, () => {
     console.log(`Listening on port ${config.port} ${config.dbUrl}`);
 });
