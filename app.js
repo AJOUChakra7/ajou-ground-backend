@@ -6,6 +6,11 @@ const { errorConverter, errorHandler } = require("./lib/middleware/error");
 
 const app = express();
 
+app.all('*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
