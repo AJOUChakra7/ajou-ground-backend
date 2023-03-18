@@ -1,5 +1,6 @@
 const express = require("express");
 const reservationRoute = require("./reservation.route");
+const userRoute = require('./user.route')
 
 const router = express.Router();
 const routes = [
@@ -7,6 +8,10 @@ const routes = [
     path: "/reservation",
     route: reservationRoute,
   },
+  {
+    path: '/user',
+    route: userRoute
+  }
 ];
 
 
