@@ -2,9 +2,8 @@ const { Router } = require("express");
 const { findOneUserByEmail } = require("../lib/functions/user");
 const { createReservation, findReservationByDate } = require("../lib/functions/reservation");
 const { findOneGroundByName } = require("../lib/functions/ground");
-const { catchAsync, ApiError } = require("../lib/utils");
+const { catchAsync, ApiError, utcToKst } = require("../lib/utils");
 const httpStatus = require("http-status");
-// const { groupBy } = require('../lib/utils')
 
 const router = Router();
 
@@ -29,8 +28,11 @@ router.get("/", catchAsync(async (req, res) => {
   }
 
   const reservations = await findReservationByDate(date)
+  for (const element of reservations) {
+    element.startTime = utcToKst(element.startTime)
+  }
 
-  res.json({ ...groupBy(reservations, ({ startTime }) => startTime.getHours() ) })
+  res.json({ ...groupBy(reservations, ({ startTime }) => startTime.getUTCHours()) })
 }))
 
 router.post("/", catchAsync(async (req, res) => {
@@ -38,7 +40,6 @@ router.post("/", catchAsync(async (req, res) => {
 
   const user = await findOneUserByEmail("test@ajou.ac.kr");
   const groundDoc = await findOneGroundByName(ground);
-  console.log(user, groundDoc)
 
   const reservation = await createReservation({
     startTime,
